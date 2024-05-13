@@ -46,3 +46,30 @@ Welcome to the repository for the DTS Solution DevOps Task. This repository cont
 3. Iterate on configurations and deployments as needed to address any issues encountered during testing.
 
 Feel free to reach out for any questions or assistance with the setup and deployment process. Happy coding!
+
+
+## File Structure
+```
+└── terraform-docker-project/
+    │
+    ├── docker/
+    │   ├── app/
+    │   │   ├── Dockerfile
+    │   │   └── app_source_code/
+    │   │
+    │   └── mongodb/
+    │       └── Dockerfile
+    │
+    ├── terraform/
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    ├── scripts/
+    │   ├── install_docker.sh
+    │   └── start_services.sh            # Script to start Docker services using Docker Compose
+    │
+    ├── docker-compose.yml               # Docker Compose configuration file
+    │
+    └── README.md
+```
