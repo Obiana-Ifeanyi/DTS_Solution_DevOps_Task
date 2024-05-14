@@ -49,7 +49,8 @@ This project demonstrates the use of Ansible for automating the deployment of a 
    Run the following script to install Docker on your target machine(s):
 
    ```bash
-   bash scripts/install_docker.sh
+   chmod +x install_docker.sh
+   bash ./install_docker.sh
 
 2. **Setup Ansible Inventory:**
    Define your target machines in the ansible/inventory.yml file.
