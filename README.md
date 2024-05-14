@@ -50,26 +50,18 @@ Feel free to reach out for any questions or assistance with the setup and deploy
 
 ## File Structure
 ```
-└── terraform-docker-project/
-    │
-    ├── docker/
-    │   ├── app/
-    │   │   ├── Dockerfile
-    │   │   └── app_source_code/
-    │   │
-    │   └── mongodb/
-    │       └── Dockerfile
-    │
-    ├── terraform/
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
+└── ansible-docker-project/
+    ├── ansible/
+    │   ├── inventory.yml
+    │   ├── playbook.yml
+    │   ├── deploy_stack_playbook.yml
+    │   └── lab/
+    │       ├── app.js
+    │       ├── Dockerfile
+    │       ├── docker-compose.yml
+    │       ├── package.json
+    │       └── node_modules
     ├── scripts/
-    │   ├── install_docker.sh
-    │   └── start_services.sh            # Script to start Docker services using Docker Compose
-    │
-    ├── docker-compose.yml               # Docker Compose configuration file
-    │
+    │   └── install_docker.sh
     └── README.md
 ```
