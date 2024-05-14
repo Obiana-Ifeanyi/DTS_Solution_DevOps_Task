@@ -1,0 +1,44 @@
+# Manager
+- name: Manager commands
+  hosts: manager
+  tasks:
+    # Copy the app to the manager
+    - name: Copy the app to the manager
+      copy:
+        src: lab/
+        dest: lab/
+        remote_src: true
+
+    # Create Local Repo
+    - name: Create a docker registry
+      shell: >
+        docker service create --name registry --publish published=5000,target=5000 registry:2
+      register: create_docker_service
+    - debug:
+        var: create_docker_service.stdout
+
+    # Validate Local Repo is Running
+    - name: Validate the registry
+      shell: >
+        docker service ls
+      register: list_service
+    - debug:
+        var: list_service.stdout
+
+    # Build Image
+    - name: Build the image
+      shell: >
+        chdir=/home/user/lab docker-compose build
+
+    # Push Image to Local Repo
+    - name: Push image to registry
+      shell: >
+        chdir=/home/user/lab docker-compose push
+
+    # Deploy Stack
+    - name: Deploy the stack
+      shell: >
+        docker stack deploy --compose-file lab/docker-compose.yml lab
+      register: deploy_stack
+    - debug:
+        msg: "The app is running on http://192.168.1.144:3000"

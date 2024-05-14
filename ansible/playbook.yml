@@ -1,0 +1,67 @@
+# Manager
+- name: Manager commands
+  hosts: manager
+  tasks:
+  # Task 1: Check Status  
+  - name: determine swarm status
+    # Use Shell Command
+    shell: >
+      docker info | grep Swarm
+    # Give the output a variable name
+    register: swarm_status
+  # Printout the varaible
+  - debug:
+      var: swarm_status.stdout
+
+  # Task 2: Initialiaze a Swarm Cluster
+  - name: initialize swarm cluster
+    shell: >
+      docker swarm init --advertise-addr 192.168.1.144
+    register: manager_node
+  - debug:
+      var: manager_node.stdout
+
+  # Task 3: Query and print out the Token
+  - name: retrieve swarm worker token
+    shell: >
+      docker swarm join-token -q worker
+    register: swarm_worker_token
+  - debug:
+      var: swarm_worker_token.stdout
+
+  # Set manager worker token as a fact
+  - set_fact:
+      manager_worker_token: "{{ swarm_worker_token.stdout }}"
+
+
+# Workers
+- name: Workers commands
+  hosts: workers
+  tasks:
+    # Task 1: Join the Swarm Cluster
+    - name: join swarm cluster
+      shell: >
+        docker swarm join --token {{ hostvars['192.168.1.144']['manager_worker_token'] }} 192.168.1.144:2377
+
+
+# Database
+- name: Database commands
+  hosts: database
+  tasks:
+    # Task 1: Join the Swarm Cluster
+    - name: join swarm cluster
+      shell: >
+        docker swarm join --token {{ hostvars['192.168.1.144']['manager_worker_token'] }} 192.168.1.144:2377
+
+
+# Validate the Swarm
+- name: List Swarm Nodes
+  hosts: manager
+  tasks:
+    # List out the nodes
+    - name: List Swarm nodes
+      shell: >
+        docker node ls
+      register: swarm_nodes
+    - debug:
+        var: swarm_nodes.stdout
